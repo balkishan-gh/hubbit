@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { FaEllipsisV } from "react-icons/fa";
 import {
@@ -17,6 +17,7 @@ import { useSession } from "next-auth/react";
 import { cn } from "../../@/lib/utils";
 import PostModal from "../modals/PostModal";
 import usePostModal from "../hooks/usePostModal";
+import { Heart } from "lucide-react";
 
 const Post = ({
   isSelected,
@@ -59,6 +60,7 @@ const Post = ({
     handleClose(postId);
     postModal.onOpen();
   };
+
   return (
     <div className="w-full bg-white rounded-lg shadow-md p-4 relative">
       {/* <Dialog>
@@ -130,23 +132,12 @@ const Post = ({
       <div className="flex justify-between">
         <div className="flex items-center">
           <button
-            onClick={onHeartClick}
+            onClick={() => {
+              onHeartClick(postId);
+            }}
             className="text-indigo-600 focus:outline-none"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
+            <Heart />
           </button>
           <p className="text-indigo-600">{likeCount}</p>
         </div>

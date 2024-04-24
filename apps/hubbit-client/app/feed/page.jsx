@@ -21,7 +21,6 @@ const Feed = () => {
   const editPostModal = useEditPostModal();
   const session = useSession();
   const router = useRouter();
-  const [likeCount, setLikeCount] = useState(0);
   const [posts, setPosts] = useState([]);
 
   const handleClose = (selectedPostId) => {
@@ -31,6 +30,7 @@ const Feed = () => {
   useEffect(() => {
     axios.get("/api/find-posts").then((response) => {
       setPosts(response.data);
+      console.log(response.data);
     });
   }, []);
 
@@ -40,6 +40,21 @@ const Feed = () => {
   if (session.status === "unauthenticated") {
     router.push("/signin");
   }
+
+  const onHeartClick = async (id, userId) => {
+    const response = await axios.post("/api/like-post", {
+      postId: id,
+      userId: session.data.user.email,
+    });
+    // const updatedPosts = posts.map((post) => {
+    //   if (post.id === id) {
+    //     return { ...post, likeCount: response.data };
+    //   }
+    //   return post;
+    // });
+    // setPosts(updatedPosts);
+    // console.log(posts);
+  };
 
   return (
     <>
@@ -70,16 +85,14 @@ const Feed = () => {
             userUsername={p.userId}
             postImage="#"
             postDescription={p.postDescription}
-            onHeartClick={() => {
-              // Handle heart click
-            }}
+            onHeartClick={onHeartClick}
             onCommentClick={() => {
               // Handle comment click
             }}
             onShareClick={() => {
               // Handle share click
             }}
-            likeCount={10}
+            likeCount={p.likes.length}
             commentCount={10}
             shareCount={10}
             handleClose={handleClose}

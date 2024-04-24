@@ -16,6 +16,6 @@
     "app/[auth]/signin/page.jsx",
     "app/[auth]/signup/page.jsx",
     "app/api/auth/[...nextauth]/route.ts"
-, "app/create-post/page.jsx", "app/feed/page.jsx"  ],
+, "app/create-post/page.jsx", "app/feed/page.jsx", "app/api/like-post/route.ts", "app/_components/Post.jsx"  ],
   "exclude": ["node_modules"]
 }
