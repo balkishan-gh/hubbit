@@ -41,20 +41,18 @@ const Feed = () => {
     router.push("/signin");
   }
 
-  const onHeartClick = async (id, userId) => {
-    const response = await axios.post("/api/like-post", {
-      postId: id,
-      userId: session.data.user.email,
-    });
-    // const updatedPosts = posts.map((post) => {
-    //   if (post.id === id) {
-    //     return { ...post, likeCount: response.data };
-    //   }
-    //   return post;
-    // });
-    // setPosts(updatedPosts);
-    // console.log(posts);
-  };
+  // const onHeartClick = async (id, userId) => {
+  //   const response = await axios.post("/api/like-post", {
+  //     postId: id,
+  //     userId: session.data.user.email,
+  //   });
+  //   // const updatedPosts = posts.map((post) => {
+  //   //   if (post.id === id) {
+  //   //     return { ...post, likeCount: response.data };
+  //   //   }
+  //   //   return post;
+  //   // });
+  // };
 
   return (
     <>
@@ -78,6 +76,7 @@ const Feed = () => {
         <CreatePostModal isOpen={editPostModal.isOpen} />
         {posts.map((p) => (
           <Post
+            key={p.id}
             isSelected={p.id === selectedPostId}
             userAvatar="#"
             postId={p.id}
@@ -85,14 +84,14 @@ const Feed = () => {
             userUsername={p.userId}
             postImage="#"
             postDescription={p.postDescription}
-            onHeartClick={onHeartClick}
+            // onHeartClick={onHeartClick}
             onCommentClick={() => {
               // Handle comment click
             }}
             onShareClick={() => {
               // Handle share click
             }}
-            likeCount={p.likes.length}
+            // likeCount={p.likes.length}
             commentCount={10}
             shareCount={10}
             handleClose={handleClose}

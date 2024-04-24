@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaEllipsisV } from "react-icons/fa";
 import {
@@ -20,6 +20,7 @@ import usePostModal from "../hooks/usePostModal";
 import { Heart } from "lucide-react";
 
 const Post = ({
+  // isLiked,
   isSelected,
   postId,
   userAvatar,
@@ -27,10 +28,10 @@ const Post = ({
   userUsername,
   postImage,
   postDescription,
-  onHeartClick,
+  // onHeartClick,
   onCommentClick,
   onShareClick,
-  likeCount,
+  // likeCount,
   commentCount,
   shareCount,
   handleClose,
@@ -40,6 +41,8 @@ const Post = ({
   const indexOfAtSign = userUsername.indexOf("@");
   const truncatedUserUserName = userUsername.substring(0, indexOfAtSign);
   const isValid = session.data.user.email === userUsername;
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
   const deletePost = async () => {
     if (isValid) {
       try {
@@ -60,6 +63,37 @@ const Post = ({
     handleClose(postId);
     postModal.onOpen();
   };
+
+  const onHeartClick = async () => {
+    const response = await axios.post("/api/like-post", {
+      postId: postId,
+      userId: session.data.user.email,
+    });
+    // const updatedPosts = posts.map((post) => {
+    //   if (post.id === id) {
+    //     return { ...post, likeCount: response.data };
+    //   }
+    //   return post;
+    // });
+    console.log(response);
+    setIsLiked(response.data.isLiked);
+    setLikeCount(response.data.likeCount);
+  };
+
+  // useEffect(() => {
+  //   localStorage.setItem(`post_${postId}_likeCount`, likeCount.toString());
+  //   localStorage.setItem(`post_${postId}_isLiked`, isLiked.toString());
+  // }, [likeCount, isLiked, postId]);
+
+  // // Retrieve initial state values from localStorage upon component mount
+  // useEffect(() => {
+  //   const storedLikeCount = localStorage.getItem(`post_${postId}_likeCount`);
+  //   const storedIsLiked = localStorage.getItem(`post_${postId}_isLiked`);
+  //   if (storedLikeCount !== null && storedIsLiked !== null) {
+  //     setLikeCount(parseInt(storedLikeCount));
+  //     setIsLiked(storedIsLiked === "true");
+  //   }
+  // }, [postId]);
 
   return (
     <div className="w-full bg-white rounded-lg shadow-md p-4 relative">
@@ -133,13 +167,16 @@ const Post = ({
         <div className="flex items-center">
           <button
             onClick={() => {
-              onHeartClick(postId);
+              // onHeartClick(postId);\
+              onHeartClick();
             }}
-            className="text-indigo-600 focus:outline-none"
+            className={cn(isLiked ? "text-indigo-600" : "text-gray-500")}
           >
             <Heart />
           </button>
-          <p className="text-indigo-600">{likeCount}</p>
+          <p className={cn(isLiked ? "text-indigo-600" : "text-gray-500")}>
+            {likeCount}
+          </p>
         </div>
         <div className="flex items-start">
           <button

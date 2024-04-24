@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
   if (post && post.likes.includes(userId)) {
     // Update the post to remove the string from the likes array
-    await prisma.post.update({
+    const updatedPost = await prisma.post.update({
       where: { id: postId },
       data: {
         likes: {
@@ -40,8 +40,12 @@ export async function POST(request: Request) {
         },
       },
     });
+    return NextResponse.json({
+      length: updatedPost.likes.length,
+      isLiked: false,
+    });
   } else {
-    await prisma.post.update({
+    const updatedPost = await prisma.post.update({
       where: { id: postId },
       data: {
         likes: {
@@ -49,8 +53,9 @@ export async function POST(request: Request) {
         },
       },
     });
+    return NextResponse.json({
+      likeCount: updatedPost.likes.length,
+      isLiked: true,
+    });
   }
-  console.log("I'm in Fever.");
-
-  return NextResponse.json(post.likes.length);
 }
