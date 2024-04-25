@@ -20,7 +20,7 @@ import usePostModal from "../hooks/usePostModal";
 import { Heart } from "lucide-react";
 
 const Post = ({
-  // isLiked,
+  liked,
   isSelected,
   postId,
   userAvatar,
@@ -31,7 +31,7 @@ const Post = ({
   // onHeartClick,
   onCommentClick,
   onShareClick,
-  // likeCount,
+  totalLikes,
   commentCount,
   shareCount,
   handleClose,
@@ -41,8 +41,8 @@ const Post = ({
   const indexOfAtSign = userUsername.indexOf("@");
   const truncatedUserUserName = userUsername.substring(0, indexOfAtSign);
   const isValid = session.data.user.email === userUsername;
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
+  const [isLiked, setIsLiked] = useState(liked);
+  const [likeCount, setLikeCount] = useState(totalLikes);
   const deletePost = async () => {
     if (isValid) {
       try {

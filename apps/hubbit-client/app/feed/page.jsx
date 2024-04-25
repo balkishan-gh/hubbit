@@ -92,9 +92,11 @@ const Feed = () => {
               // Handle share click
             }}
             // likeCount={p.likes.length}
+            totalLikes={p.likes.length}
             commentCount={10}
             shareCount={10}
             handleClose={handleClose}
+            liked={p.likes.includes(session.data.user.email)}
           />
         ))}
       </div>
